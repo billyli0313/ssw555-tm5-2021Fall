@@ -21,7 +21,11 @@ public class Individual {
 		this.name = name;
 	}
 	public String getId() {
-		return id.replaceAll("@", "");
+		if(id == null){
+			return "";
+		}else{
+			return id.replaceAll("@", "");
+		}
 	}
 	public void setId(String id) {
 		this.id = id;

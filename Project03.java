@@ -11,7 +11,7 @@ import java.util.List;
 public class Project03 {
 	private static List<Individual> individualList = new ArrayList<Individual>();
 	private static List<Family> familyList = new ArrayList<Family>();
-
+	private static List<String> indiList = new ArrayList<String>();
 	public static void printINDIAndFAMTables(File f) {
         BufferedReader br = null;
 
@@ -61,8 +61,13 @@ public class Project03 {
 					if(tag.equals("INDI")) {
 						indv = new Individual();
 						indv.setId(value);
-						
-						individualList.add(indv);
+						if(indiList.contains(value)){
+							System.out.println("INDI "+value+" already exsit");
+						}else{
+							individualList.add(indv);
+							indiList.add(value);
+						}
+
 					}
 					//Get value of NAME
 					if(tag.equals("NAME") && indv != null) {
