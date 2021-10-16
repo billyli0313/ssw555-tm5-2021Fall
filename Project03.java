@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Project03 {
 	private static List<Individual> individualList = new ArrayList<Individual>();
@@ -199,11 +197,213 @@ public class Project03 {
 	    	System.out.format("%1$-10s %2$-12s %3$-12s %4$-5s %5$-25s %6$-10s %7$-25s %8$-20s \n", 
 	    						"ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children");
 
-	    	for(Family fam: familyList)
+	    	for(Family fam: familyList) {
 	    		System.out.format("%1$-10s %2$-12s %3$-12s %4$-10s %5$-25s %6$-10s %7$-25s %8$-20s \n", 
 	    		                  fam.getId(), fam.getMarriageDate() == null ? "NA" : fam.getMarriageDate(), 
 	    		                  fam.getDivorceDate() == null ? "NA" : fam.getDivorceDate(), fam.getHusbandId(),
-	    		                  fam.getHusbandName(),fam.getWifeId(), fam.getWifeName(),fam.getCIdAsStr());	    							
+	    		                  fam.getHusbandName(),fam.getWifeId(), fam.getWifeName(),fam.getCIdAsStr());	  
+	    	}
+	    	//Sprint1:US01:Dates before current date
+	    	//shift name of month to number
+			Map<String,Integer> tags = new HashMap<String,Integer>(); 
+			tags.put("JAN",1); 
+			tags.put("FEB",2); 
+			tags.put("MAR",3); 
+			tags.put("APR",4); 
+			tags.put("MAY",5); 
+			tags.put("JUN",6); 
+			tags.put("JUL",7); 
+			tags.put("AUG",8); 
+			tags.put("SEP",9); 
+			tags.put("OCT",10); 
+			tags.put("NOV",11); 
+			tags.put("DEC",12); 
+			//get current date
+	    	Date date = new Date();
+	    	int curyear = Integer.parseInt(String.format("%tY", date));
+	    	int curmonth = Integer.parseInt(String.format("%tm", date));
+	    	int curday = Integer.parseInt(String.format("%te", date));
+	    	// variable of birthday
+	    	int count = 0;
+	    	int day = 0;
+	    	int month = 0;
+	    	int year = 0;
+	    	//variable of death day
+	    	int deathcount = 0;
+	    	int deathday = 0;
+	    	int deathmonth = 0;
+	    	int deathyear = 0;
+	    	//variable of marriage day
+	    	int marcount = 0;
+	    	int marday = 0;
+	    	int marmonth = 0;
+	    	int maryear = 0;
+	    	//variable of divorce day
+	    	int divcount = 0;
+	    	int divday = 0;
+	    	int divmonth = 0;
+	    	int divyear = 0;  	
+	    	
+	    	for(int i=0;i<individualList.size();i++) {
+	    		Individual curIndv = individualList.get(i);
+	    		//Birthday before current date
+	    		count = 0;
+	    		for(String member:curIndv.getBirthDate().split(" ")) {
+	    			count++;
+	    			if(count==1) {
+	    				day = Integer.parseInt(member);
+	    			}else if(count==2){
+	    				month = tags.get(member);	
+	    			}else if(count==3){
+	    				year = Integer.parseInt(member);	
+	    				if(year>curyear) {
+	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
+	    				}
+	    				if(year==curyear && month>curmonth) {
+	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
+	    				}
+	    				if(year==curyear && month==curmonth && day>curday) {
+	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
+	    				}
+	    				count = 0;
+	    			}
+	    		}
+	    		//Death day before current date
+	    		if(!curIndv.getDeathDate().equals("NA")) {
+	    			deathcount = 0;
+		    		for(String deathmember:curIndv.getDeathDate().split(" ")) {
+		    			deathcount++;
+		    			if(deathcount==1) {
+		    				deathday = Integer.parseInt(deathmember);
+		    			}else if(deathcount==2){
+		    				deathmonth = tags.get(deathmember);	
+		    			}else if(deathcount==3){
+		    				deathyear = Integer.parseInt(deathmember);	
+		    				if(deathyear>curyear) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    				}
+		    				if(deathyear==curyear && deathmonth>curmonth) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    				}
+		    				if(deathyear==curyear && deathmonth==curmonth && deathday>curday) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    				}
+		    				deathcount = 0;
+		    			}
+		    		}	
+	    		}
+	    	}
+	    	for(Family fam: familyList) {
+	    		//Marriage day before current date
+	    		if(!fam.getMarriageDate().equals("NA")) {
+	    			marcount = 0;
+		    		for(String marmember:fam.getMarriageDate().split(" ")) {
+		    			marcount++;
+		    			if(marcount==1) {
+		    				marday = Integer.parseInt(marmember);
+		    			}else if(marcount==2){
+		    				marmonth = tags.get(marmember);	
+		    			}else if(marcount==3){
+		    				maryear = Integer.parseInt(marmember);	
+		    				if(maryear>curyear) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
+		    				}
+		    				if(maryear==curyear && marmonth>curmonth) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
+		    				}
+		    				if(maryear==curyear && marmonth==curmonth && marday>curday) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
+		    				}
+		    				marcount = 0;
+		    			}
+		    		}	
+	    		}
+	    		//Divorce day before current date
+	    		if(!fam.getDivorceDate().equals("NA")) {
+	    			divcount = 0;
+		    		for(String divmember:fam.getDivorceDate().split(" ")) {
+		    			divcount++;
+		    			if(divcount==1) {
+		    				divday = Integer.parseInt(divmember);
+		    			}else if(divcount==2){
+		    				divmonth = tags.get(divmember);	
+		    			}else if(divcount==3){
+		    				divyear = Integer.parseInt(divmember);	
+		    				if(divyear>curyear) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
+		    				}
+		    				if(divyear==curyear && divmonth>curmonth) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
+		    				}
+		    				if(divyear==curyear && divmonth==curmonth && divday>curday) {
+		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
+		    				}
+		    				divcount = 0;
+		    			}
+		    		}
+	    		}
+	    		//Sprint1:US02:Birthday before marriage
+	    		marcount=0;
+	    		for(String member:fam.getMarriageDate().split(" ")) {
+	    			marcount++;
+	    			if(marcount==1) {
+	    				marday = Integer.parseInt(member);
+	    			}else if(marcount==2){
+	    				marmonth = tags.get(member);	
+	    			}else if(marcount==3){
+	    				maryear = Integer.parseInt(member);	
+	    				marcount=0;
+	    			}
+	    		}
+	    		count=0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			if(curIndv.getId().equals(fam.getHusbandId())) {
+	    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    	    			count++;
+	    	    			if(count==1) {
+	    	    				day = Integer.parseInt(member);
+	    	    			}else if(count==2){
+	    	    				month = tags.get(member);	
+	    	    			}else if(count==3){
+	    	    				year = Integer.parseInt(member);	
+	    	    				if(year>maryear) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				if(year==maryear && month>marmonth) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				if(year==maryear && month==marmonth && day>marday) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				count = 0;
+	    	    			}
+	    				}
+	    			}
+	    			if(curIndv.getId().equals(fam.getWifeId())) {
+	    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    	    			count++;
+	    	    			if(count==1) {
+	    	    				day = Integer.parseInt(member);
+	    	    			}else if(count==2){
+	    	    				month = tags.get(member);	
+	    	    			}else if(count==3){
+	    	    				year = Integer.parseInt(member);	
+	    	    				if(year>maryear) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				if(year==maryear && month>marmonth) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				if(year==maryear && month==marmonth && day>marday) {
+	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				}
+	    	    				count = 0;
+	    	    			}
+	    				}
+	    			}
+	    		}	
+	    	}
         }  catch (IOException e) {
         	//e.printStackTrace();
         	System.out.println("Please enter correct file name");
@@ -228,7 +428,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\SSW555WSGroup5.ged");
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
 		p.printINDIAndFAMTables(file);
 	}
 }
