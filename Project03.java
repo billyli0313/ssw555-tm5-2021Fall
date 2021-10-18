@@ -217,7 +217,7 @@ public class Project03 {
 			tags.put("SEP",9); 
 			tags.put("OCT",10); 
 			tags.put("NOV",11); 
-			tags.put("DEC",12);
+			tags.put("DEC",12); 
 			//get current date
 	    	Date date = new Date();
 	    	int curyear = Integer.parseInt(String.format("%tY", date));
@@ -228,15 +228,15 @@ public class Project03 {
 	    	int day = 0;
 	    	int month = 0;
 	    	int year = 0;
-			//150 year
-			int year150 = 0;
-			//14 years old
-			int year14 = 0;
 	    	//variable of death day
 	    	int deathcount = 0;
 	    	int deathday = 0;
 	    	int deathmonth = 0;
 	    	int deathyear = 0;
+			//150 & 14
+			int year150 = 0;
+			int year14 = 0;
+
 	    	//variable of marriage day
 	    	int marcount = 0;
 	    	int marday = 0;
@@ -272,6 +272,36 @@ public class Project03 {
 	    				count = 0;
 	    			}
 	    		}
+				//Less than 140
+				for(String member:curIndv.getBirthDate().split(" ")) {
+	    			count++;
+	    			if(count==1) {
+	    				day = Integer.parseInt(member);
+	    			}else if(count==2){
+	    				month = tags.get(member);	
+	    			}else if(count==3){
+	    				year = Integer.parseInt(member);
+						year150 = year + 150;
+						if(!curIndv.getDeathDate().equals("NA")) {
+	 	   					deathcount = 0;
+		    				for(String deathmember:curIndv.getDeathDate().split(" ")) {
+		    					deathcount++;
+		    					if(deathcount==1) {
+		    						deathday = Integer.parseInt(deathmember);
+		    					}else if(deathcount==2){
+		    						deathmonth = tags.get(deathmember);	
+		    					}else if(deathcount==3){
+		    						deathyear = Integer.parseInt(deathmember);	
+		    						if(deathyear<year150) {
+		    							System.out.println("ERROR: INDIVIDUAL: US07: " +curIndv.getId()+": Died "+ curIndv.getBirthDate() +"Less than 140 years old");
+		    						}
+		    						deathcount = 0;
+		    					}
+		    				}	
+	    				}
+						count = 0;
+					}
+				}
 	    		//Death day before current date
 	    		if(!curIndv.getDeathDate().equals("NA")) {
 	    			deathcount = 0;
@@ -296,62 +326,7 @@ public class Project03 {
 		    			}
 		    		}	
 	    		}
-				//Less then 150 years old
-				count = 0;
-	    		for(String member:curIndv.getBirthDate().split(" ")) {
-	    			count++;
-	    			if(count==1) {
-	    				day = Integer.parseInt(member);
-	    			}else if(count==2){
-	    				month = tags.get(member);	
-	    			}else if(count==3){
-	    				year = Integer.parseInt(member);
-						year150 = year+150;
-					if(!curIndv.getDeathDate().equals("NA")) {
-	 	   				deathcount = 0;
-		    			for(String deathmember:curIndv.getDeathDate().split(" ")) {
-		    				deathcount++;
-		    				if(deathcount==1) {
-		    					deathday = Integer.parseInt(deathmember);
-		    				}else if(deathcount==2){
-		    					deathmonth = tags.get(deathmember);	
-		    				}else if(deathcount==3){
-		    					deathyear = Integer.parseInt(deathmember);	
-		    					if(deathyear>year150) {
-		    						System.out.println("ERROR: INDIVIDUAL: US07: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"bigger than 140 years old");
-		    					}
-		    					deathcount = 0;
-		    				}
-		    			}	
-	    			}
-					count = 0;
-				}
-				//Marriage after 14
-	    				year = Integer.parseInt(member);
-						year14 = year +14;
-						for(Family fam: familyList) {
-						if(!fam.getMarriageDate().equals("NA")) {
-							marcount = 0;
-							for(String marmember:fam.getMarriageDate().split(" ")) {
-								marcount++;
-								if(marcount==1) {
-									marday = Integer.parseInt(marmember);
-								}else if(marcount==2){
-									marmonth = tags.get(marmember);	
-								}else if(marcount==3){
-									maryear = Integer.parseInt(marmember);	
-									if(maryear<year14) {
-										System.out.println("ERROR: INDIVIDUAL: US10: " +fam.getId()+": Married "+ fam.getMarriageDate() +"marriage before 14 years old");
-									}
-									marcount = 0;
-								}
-							}	
-						}
-						}
-	    			
-	    			}
-	    		}
-	    	
+	    	}
 	    	for(Family fam: familyList) {
 	    		//Marriage day before current date
 	    		if(!fam.getMarriageDate().equals("NA")) {
@@ -376,7 +351,27 @@ public class Project03 {
 		    				marcount = 0;
 		    			}
 		    		}	
-	    		}				
+	    		}
+				//Marriage after 14
+				if(!fam.getMarriageDate().equals("NA")) {
+					
+					year14 = year +14;
+					marcount = 0;
+					for(String marmember:fam.getMarriageDate().split(" ")) {
+						marcount++;
+						if(marcount==1) {
+							marday = Integer.parseInt(marmember);
+						}else if(marcount==2){
+							marmonth = tags.get(marmember);	
+						}else if(marcount==3){
+							maryear = Integer.parseInt(marmember);	
+							if(maryear>year14) {
+								System.out.println("ERROR: INDIVIDUAL: US10: " +fam.getId()+": Married "+ fam.getMarriageDate() +"marriage AFTER 14 years old");
+							}
+							marcount = 0;
+						}
+					}	
+				}
 	    		//Divorce day before current date
 	    		if(!fam.getDivorceDate().equals("NA")) {
 	    			divcount = 0;
