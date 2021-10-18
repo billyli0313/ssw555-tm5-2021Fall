@@ -24,11 +24,11 @@ public class Individual {
 		if(id == null){
 			return "";
 		}else{
-			return id;
+			return id.replaceAll("@", "");
 		}
 	}
 	public void setId(String id) {
-		this.id = id.replaceAll("@", "");
+		this.id = id;
 	}
 	public String isAlive() {
 		return deathDate == null ? "True" : "False";

@@ -9,8 +9,7 @@ import java.util.*;
 public class Project03 {
 	private static List<Individual> individualList = new ArrayList<Individual>();
 	private static List<Family> familyList = new ArrayList<Family>();
-	private static List<String> individualIDList = new ArrayList<String>();
-	private static List<String> familyIDList = new ArrayList<String>();
+	private static List<String> indiList = new ArrayList<String>();
 	public static void printINDIAndFAMTables(File f) {
         BufferedReader br = null;
 
@@ -60,7 +59,13 @@ public class Project03 {
 					if(tag.equals("INDI")) {
 						indv = new Individual();
 						indv.setId(value);
-						individualList.add(indv);
+						if(indiList.contains(value)){
+							System.out.println("INDI "+value+" already exsit");
+						}else{
+							individualList.add(indv);
+							indiList.add(value);
+						}
+
 					}
 					//Get value of NAME
 					if(tag.equals("NAME") && indv != null) {
@@ -112,9 +117,6 @@ public class Project03 {
 					}
 					//Get value of family information
 					if(tag.equals("FAM")) {
-						// curFamily = new Family();
-						// curFamily.setId(value.replaceAll("@", ""));
-						// familyList.add(curFamily);
 						curFamily = null;
 						for (Family family:familyList) {
 							if(family.getId().trim().equals((value.replaceAll("@", "")).trim()))
@@ -201,44 +203,6 @@ public class Project03 {
 	    		                  fam.getDivorceDate() == null ? "NA" : fam.getDivorceDate(), fam.getHusbandId(),
 	    		                  fam.getHusbandName(),fam.getWifeId(), fam.getWifeName(),fam.getCIdAsStr());	  
 	    	}
-			//Sprint1:US21:Correct gender for role
-			for(Family fam: familyList) {
-				String husID = fam.husbandId;
-				String wifeID = fam.wifeId;
-				for(int i=0;i<individualList.size();i++){
-					Individual curIndv = individualList.get(i);
-					if(curIndv.getId() == husID){
-						if(!curIndv.getGender().equals("M")){
-							System.out.println("ERROR: INDIVIDUAL: US021: Correct gender for role :" +indv.getId()+" gender is error");
-						}
-					}else if(curIndv.getId()==wifeID){
-						if(!curIndv.getGender().equals("F")){
-							System.out.println("ERROR: INDIVIDUAL: US021: Correct gender for role :" +indv.getId()+" gender is error");
-						}
-					}
-				}
-			}
-			//Sprint1:US22:Unique IDs
-			for(int i=0;i<individualList.size();i++) {
-	    		Individual curIndv = individualList.get(i);
-				String INDI = curIndv.getId();
-				if(individualIDList.contains(INDI)){
-					System.out.println("ERROR: INDIVIDUAL: US022: Individual ID :" +indv.getId()+" is not unique");
-				
-				}else{
-					individualIDList.add(INDI);
-				}
-			}
-			for(Family fam: familyList) {
-				String INDI = fam.getId();
-				if(familyIDList.contains(INDI)){
-					System.out.println("ERROR: FAMILY: US022: FAMILY ID :" +indv.getId()+" is not unique");
-				}else{
-					familyIDList.add(INDI);
-				}
-			}
-
-
 	    	//Sprint1:US01:Dates before current date
 	    	//shift name of month to number
 			Map<String,Integer> tags = new HashMap<String,Integer>(); 
@@ -464,7 +428,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("D:\\SIT\\CS555WS\\ssw555-tm5-2021Fall\\ssw555-tm5-2021Fall.ged");
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
 		p.printINDIAndFAMTables(file);
 	}
 }
