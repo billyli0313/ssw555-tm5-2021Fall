@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -233,9 +232,6 @@ public class Project03 {
 	    	int deathday = 0;
 	    	int deathmonth = 0;
 	    	int deathyear = 0;
-		//150 & 14
-		int year150 = 0;
-		int year14 = 0;
 	    	//variable of marriage day
 	    	int marcount = 0;
 	    	int marday = 0;
@@ -246,156 +242,63 @@ public class Project03 {
 	    	int divday = 0;
 	    	int divmonth = 0;
 	    	int divyear = 0;  	
-	    	
-	    	for(int i=0;i<individualList.size();i++) {
-	    		Individual curIndv = individualList.get(i);
-	    		//Birthday before current date
-	    		count = 0;
-	    		for(String member:curIndv.getBirthDate().split(" ")) {
-	    			count++;
-	    			if(count==1) {
-	    				day = Integer.parseInt(member);
-	    			}else if(count==2){
-	    				month = tags.get(member);	
-	    			}else if(count==3){
-	    				year = Integer.parseInt(member);	
-	    				if(year>curyear) {
-	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
-	    				}
-	    				if(year==curyear && month>curmonth) {
-	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
-	    				}
-	    				if(year==curyear && month==curmonth && day>curday) {
-	    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"occurs in the future");
-	    				}
-	    				count = 0;
-	    			}
-	    		}
-			//Less than 140
-				for(String member:curIndv.getBirthDate().split(" ")) {
-	    			count++;
-	    			if(count==1) {
-	    				day = Integer.parseInt(member);
-	    			}else if(count==2){
-	    				month = tags.get(member);	
-	    			}else if(count==3){
-	    				year = Integer.parseInt(member);
-						year150 = year + 150;
-						if(!curIndv.getDeathDate().equals("NA")) {
-	 	   					deathcount = 0;
-		    				for(String deathmember:curIndv.getDeathDate().split(" ")) {
+	    	    		
+		    		//US03 Birthday before Deathday
+	    		for(int i=0;i<individualList.size();i++) {
+		    		Individual curIndv = individualList.get(i);
+		    		
+		    		count = 0; 
+		    		for(String member:curIndv.getBirthDate().split(" ")) {
+		    			count++;
+		    			if(count==1) {
+		    				day = Integer.parseInt(member);
+		    			}else if(count==2){
+		    				month = tags.get(member);	
+		    			}else if(count==3){
+		    				year = Integer.parseInt(member);	
+		    				
+		    				deathcount = 0;
+			    				if(!curIndv.getDeathDate().equals("NA")) 
+		    			for(String member1:curIndv.getDeathDate().split(" ")) {
 		    					deathcount++;
-		    					if(deathcount==1) {
-		    						deathday = Integer.parseInt(deathmember);
-		    					}else if(deathcount==2){
-		    						deathmonth = tags.get(deathmember);	
-		    					}else if(deathcount==3){
-		    						deathyear = Integer.parseInt(deathmember);	
-		    						if(deathyear<year150) {
-		    							System.out.println("ERROR: INDIVIDUAL: US07: " +curIndv.getId()+": age "+"Less than 140 years old");
-		    						}
-		    						deathcount = 0;
-		    					}
-		    				}	
-	    				}
-						count = 0;
-					}
-				}
-	    		//Death day before current date
-	    		if(!curIndv.getDeathDate().equals("NA")) {
-	    			deathcount = 0;
-		    		for(String deathmember:curIndv.getDeathDate().split(" ")) {
-		    			deathcount++;
-		    			if(deathcount==1) {
-		    				deathday = Integer.parseInt(deathmember);
-		    			}else if(deathcount==2){
-		    				deathmonth = tags.get(deathmember);	
-		    			}else if(deathcount==3){
-		    				deathyear = Integer.parseInt(deathmember);	
-		    				if(deathyear>curyear) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    	    			if(deathcount==1) {
+		    	    				deathday = Integer.parseInt(member1);
+		    	    			}else if(deathcount==2){
+		    	    				deathmonth = tags.get(member1);	
+		    	    			}else if(deathcount==3){
+		    	    				deathyear = Integer.parseInt(member1);}}
+		    			
+		    			if(!curIndv.getDeathDate().equals("NA")) 
+		    				if(year>deathyear) {
+		    					System.out.println("ERROR: INDIVIDUAL: US03: " +curIndv.getId()+": Birthday  "+ curIndv.getBirthDate() +"after Deathday"+curIndv.getDeathDate());
+		    					
 		    				}
-		    				if(deathyear==curyear && deathmonth>curmonth) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    				else if(year==deathyear && month>deathmonth) {
+		    					System.out.println("ERROR: INDIVIDUAL: US03: " +curIndv.getId()+": Birthday  "+ curIndv.getBirthDate() +"after Deathday"+curIndv.getDeathDate());
+		    					
 		    				}
-		    				if(deathyear==curyear && deathmonth==curmonth && deathday>curday) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"occurs in the future");
+		    				else if(year==deathyear && month==deathmonth && day>deathday) {
+		    					System.out.println("ERROR: INDIVIDUAL: US03: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"after Deathday"+curIndv.getDeathDate());
+		    					
 		    				}
 		    				deathcount = 0;
+		    				count = 0;
 		    			}
-		    		}	
+		    	    			
+			    				
+		    			
+	    				
 	    		}
-	    	}
-	    	for(Family fam: familyList) {
-	    		//Marriage day before current date
+		    		
+	    		
+	    		}
+	    		
+	    		
+	    		
+	  
+	    		//Sprint1:US05:  marriage before death
+	    		for(Family fam: familyList) {
 	    		if(!fam.getMarriageDate().equals("NA")) {
-	    			marcount = 0;
-		    		for(String marmember:fam.getMarriageDate().split(" ")) {
-		    			marcount++;
-		    			if(marcount==1) {
-		    				marday = Integer.parseInt(marmember);
-		    			}else if(marcount==2){
-		    				marmonth = tags.get(marmember);	
-		    			}else if(marcount==3){
-		    				maryear = Integer.parseInt(marmember);	
-		    				if(maryear>curyear) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
-		    				}
-		    				if(maryear==curyear && marmonth>curmonth) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
-		    				}
-		    				if(maryear==curyear && marmonth==curmonth && marday>curday) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Married "+ fam.getMarriageDate() +"occurs in the future");
-		    				}
-		    				marcount = 0;
-		    			}
-		    		}	
-	    		}
-			//Marriage after 14
-				if(!fam.getMarriageDate().equals("NA")) {
-					
-					year14 = year +14;
-					marcount = 0;
-					for(String marmember:fam.getMarriageDate().split(" ")) {
-						marcount++;
-						if(marcount==1) {
-							marday = Integer.parseInt(marmember);
-						}else if(marcount==2){
-							marmonth = tags.get(marmember);	
-						}else if(marcount==3){
-							maryear = Integer.parseInt(marmember);	
-							if(maryear>year14) {
-								System.out.println("ERROR: INDIVIDUAL: US10: " +fam.getId()+": Married "+ fam.getMarriageDate() +"marriage AFTER 14 years old");
-							}
-							marcount = 0;
-						}
-					}	
-				}
-	    		//Divorce day before current date
-	    		if(!fam.getDivorceDate().equals("NA")) {
-	    			divcount = 0;
-		    		for(String divmember:fam.getDivorceDate().split(" ")) {
-		    			divcount++;
-		    			if(divcount==1) {
-		    				divday = Integer.parseInt(divmember);
-		    			}else if(divcount==2){
-		    				divmonth = tags.get(divmember);	
-		    			}else if(divcount==3){
-		    				divyear = Integer.parseInt(divmember);	
-		    				if(divyear>curyear) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
-		    				}
-		    				if(divyear==curyear && divmonth>curmonth) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
-		    				}
-		    				if(divyear==curyear && divmonth==curmonth && divday>curday) {
-		    					System.out.println("ERROR: INDIVIDUAL: US01: " +fam.getId()+": Divorced "+ fam.getDivorceDate() +"occurs in the future");
-		    				}
-		    				divcount = 0;
-		    			}
-		    		}
-	    		}
-	    		//Sprint1:US02:Birthday before marriage
 	    		marcount=0;
 	    		for(String member:fam.getMarriageDate().split(" ")) {
 	    			marcount++;
@@ -408,33 +311,39 @@ public class Project03 {
 	    				marcount=0;
 	    			}
 	    		}
+	    		
 	    		count=0;
 	    		for(int i=0;i<individualList.size();i++) {
 	    			Individual curIndv = individualList.get(i);
+	    			
 	    			if(curIndv.getId().equals(fam.getHusbandId())) {
-	    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    				if(!curIndv.getDeathDate().equals("NA")) {
+	    				for(String member:curIndv.getDeathDate().split(" ")) {
 	    	    			count++;
 	    	    			if(count==1) {
-	    	    				day = Integer.parseInt(member);
+	    	    				day =Integer.parseInt(member);
 	    	    			}else if(count==2){
 	    	    				month = tags.get(member);	
 	    	    			}else if(count==3){
 	    	    				year = Integer.parseInt(member);	
 	    	    				if(year>maryear) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before husband's DeathDate "+ curIndv.getDeathDate() );
 	    	    				}
 	    	    				if(year==maryear && month>marmonth) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before husband's DeathDate "+ curIndv.getDeathDate() );
 	    	    				}
 	    	    				if(year==maryear && month==marmonth && day>marday) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Husband's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before husband's DeathDate "+ curIndv.getDeathDate() );
 	    	    				}
 	    	    				count = 0;
 	    	    			}
 	    				}
+	    			  }
 	    			}
+	    		
 	    			if(curIndv.getId().equals(fam.getWifeId())) {
-	    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    				if(!curIndv.getDeathDate().equals("NA")) {
+	    				for(String member:curIndv.getDeathDate().split(" ")) {
 	    	    			count++;
 	    	    			if(count==1) {
 	    	    				day = Integer.parseInt(member);
@@ -442,21 +351,24 @@ public class Project03 {
 	    	    				month = tags.get(member);	
 	    	    			}else if(count==3){
 	    	    				year = Integer.parseInt(member);	
-	    	    				if(year>maryear) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				if(maryear>year) {
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before wife's DeathDate "+ curIndv.getDeathDate() );
 	    	    				}
-	    	    				if(year==maryear && month>marmonth) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				if(maryear==year && marmonth>month) {
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+ ":Marriage date " + fam.getMarriageDate()+" wife's DeathDate "+ curIndv.getDeathDate());
 	    	    				}
-	    	    				if(year==maryear && month==marmonth && day>marday) {
-	    	    					System.out.println("ERROR: FAMILY: US02: " +fam.getId()+": Wife's Birthday "+ curIndv.getBirthDate() +"after marriage date " + fam.getMarriageDate());
+	    	    				if(maryear==year && marmonth==month && marday>day) {
+	    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before wife's DeathDate "+ curIndv.getDeathDate() );
 	    	    				}
 	    	    				count = 0;
 	    	    			}
 	    				}
+	    			  }
 	    			}
-	    		}	
-	    	}
+	    	    }	
+	    	  }
+	       }
+	    	
         }  catch (IOException e) {
         	//e.printStackTrace();
         	System.out.println("Please enter correct file name");
@@ -481,7 +393,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
+		File file = new File("D:\\CS SIT\\CS555\\group userstory\\ssw555-tm5-2021Fall test.ged");
 		p.printINDIAndFAMTables(file);
 	}
 }
