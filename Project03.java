@@ -270,6 +270,17 @@ public class Project03 {
 	    	int divday = 0;
 	    	int divmonth = 0;
 	    	int divyear = 0;  	
+	    	//variable of parents death
+	    	boolean Fdeathflag = false;
+	    	int Fdeathday = 0;
+	    	int Fdeathmonth = 0;
+	    	int Fdeathyear = 0;
+	    	String Fdeath = null;
+	    	boolean Mdeathflag = false ;
+	    	int Mdeathday = 0;
+	    	int Mdeathmonth = 0;
+	    	int Mdeathyear = 0;	
+	    	String Mdeath = null;
 	    	
 	    	for(int i=0;i<individualList.size();i++) {
 	    		Individual curIndv = individualList.get(i);
@@ -479,7 +490,130 @@ public class Project03 {
 	    	    			}
 	    				}
 	    			}
+		    		//Sprint2:US08:Birth after marriage of parents
+	    			for(String ChildId : fam.getChildrenId()){
+	    				String s = ChildId.replaceAll("\'", "");
+	    				if(curIndv.getId().equals(s)) {
+	    					for(String member:curIndv.getBirthDate().split(" ")) {
+	    						count++;
+	    						if(count==1) {
+	    							day = Integer.parseInt(member);
+	    						}else if(count==2){
+	    							month = tags.get(member);	
+	    						}else if(count==3){
+	    							year = Integer.parseInt(member);	
+	    							if(year<maryear) {
+			    	    				System.out.println("ERROR: FAMILY: US08: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"before marriage date of parents " + fam.getMarriageDate());
+			    	    			}
+			    	    			if(year==maryear && month<marmonth) {
+			    	    				System.out.println("ERROR: FAMILY: US08: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"before marriage date of parents " + fam.getMarriageDate());
+			    	    			}
+			    	    			if(year==maryear && month==marmonth && day<marday) {
+			    	    				System.out.println("ERROR: FAMILY: US08: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"before marriage date of parents " + fam.getMarriageDate());
+			    	    			}
+			    	    			count = 0;
+	    						}
+	    					}
+	    				}
+	    			}
 	    		}	
+	    		//Sprint2:US09:Birth before death of parents
+	    		count=0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			if(curIndv.getId().equals(fam.getHusbandId())) {
+	    				if(!curIndv.getDeathDate().equals("NA")) {
+	    					Fdeathflag = true;
+	    					Fdeath = curIndv.getDeathDate();
+	    					for(String member:curIndv.getDeathDate().split(" ")) {
+		    						count++;
+		    	    			if(count==1) {
+		    	    				Fdeathday = Integer.parseInt(member);
+		    	    			}else if(count==2){
+		    	    				Fdeathmonth = tags.get(member);	
+		    	    			}else if(count==3){
+		    	    				Fdeathyear = Integer.parseInt(member);
+		    	    				count = 0;
+		    	    			}
+		    				}
+	    				}else {
+	    					Fdeathflag = false;
+	    				}
+	    			}
+	    		}
+	    		count=0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			if(curIndv.getId().equals(fam.getWifeId())) {
+	    				if(!curIndv.getDeathDate().equals("NA")) {
+	    					Mdeathflag = true;
+	    					Mdeath = curIndv.getDeathDate();
+		    				for(String member:curIndv.getDeathDate().split(" ")) {
+		    	    			count++;
+		    	    			if(count==1) {
+		    	    				Mdeathday = Integer.parseInt(member);
+		    	    			}else if(count==2){
+		    	    				Mdeathmonth = tags.get(member);	
+		    	    			}else if(count==3){
+		    	    				Mdeathyear = Integer.parseInt(member);
+		    	    				count = 0;
+		    	    			}
+		    				}
+	    				}else {
+	    					Mdeathflag = false;
+	    				}
+	    			}
+	    		}
+	    		if(Fdeathflag == true||Mdeathflag == true) {
+		    		count = 0;
+		    		for(int i=0;i<individualList.size();i++) {
+		    			Individual curIndv = individualList.get(i);
+		    			for(String ChildId : fam.getChildrenId()){
+		    				String s = ChildId.replaceAll("\'", "");
+		    				if(curIndv.getId().equals(s)) {
+		    					for(String member:curIndv.getBirthDate().split(" ")) {
+		    						count++;
+		    						if(count==1) {
+		    							day = Integer.parseInt(member);
+		    						}else if(count==2){
+		    							month = tags.get(member);	
+		    						}else if(count==3){
+		    							year = Integer.parseInt(member);	
+		    							if(Fdeathflag == true) {
+			    							if(year-Fdeathyear>=2) {
+					    	    				System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of father(before 9 months after death of father) " + Fdeath);
+					    	    			}
+					    	    			if(year-Fdeathyear==1) {
+					    	    				if(Fdeathmonth+9>12) {
+					    	    					if(Fdeathmonth-3<month) {
+					    	    						System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of father(before 9 months after death of father) " + Fdeath);
+					    	    					}
+					    	    				}else {
+					    	    					System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of father(before 9 months after death of father) " + Fdeath);
+					    	    				}
+					    	    			}
+					    	    			if(year==Fdeathyear && month - Fdeathmonth>9) {
+					    	    				System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of father(before 9 months after death of father) " + Fdeath);
+					    	    			}
+		    							}
+		    							if(Mdeathflag == true) {
+			    							if(year>Mdeathyear) {
+					    	    				System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of mother " + Mdeath);
+					    	    			}
+					    	    			if(year==Mdeathyear && month > Mdeathmonth) {
+					    	    				System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of mother " + Mdeath);
+					    	    			}
+					    	    			if(year==Mdeathyear && month == Mdeathmonth && day > Mdeathday) {
+					    	    				System.out.println("ERROR: FAMILY: US09: " +fam.getId()+": Child's Birthday "+ curIndv.getBirthDate() +"after death of mother " + Mdeath);
+					    	    			}
+		    							}
+				    	    			count = 0;
+		    						}
+		    					}
+		    				}
+		    			}
+	    			}
+	    		}
 	    	}
 	    		//US03 Birthday before Deathday
 			for(int i=0;i<individualList.size();i++) {
@@ -580,7 +714,7 @@ public class Project03 {
 		    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before wife's DeathDate "+ curIndv.getDeathDate() );
 		    	    				}
 		    	    				if(maryear==year && month<marmonth) {
-		    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+ ":Marriage date " + fam.getMarriageDate()+" wife's DeathDate "+ curIndv.getDeathDate());
+		    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+ ":Marriage date " + fam.getMarriageDate()+"before wife's DeathDate "+ curIndv.getDeathDate());
 		    	    				}
 		    	    				if(maryear==year && marmonth==month && day<marday) {
 		    	    					System.out.println("ERROR: FAMILY: US05: " +fam.getId()+" :Marriage date " + fam.getMarriageDate()+"before wife's DeathDate "+ curIndv.getDeathDate() );
@@ -616,7 +750,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint2_JianfeiLi.ged");
 		p.printINDIAndFAMTables(file);
 	} 
 }
