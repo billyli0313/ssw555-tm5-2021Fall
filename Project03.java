@@ -306,7 +306,9 @@ public class Project03 {
 	    				count = 0;
 	    			}
 	    		}
+
 			    //Sprint1:US07 Less than 150
+
 				for(String member:curIndv.getBirthDate().split(" ")) {
 	    			count++;
 	    			if(count==1) {
@@ -326,8 +328,10 @@ public class Project03 {
 		    						deathmonth = tags.get(deathmember);	
 		    					}else if(deathcount==3){
 		    						deathyear = Integer.parseInt(deathmember);	
+
 		    						if(deathyear>year150) {
 		    							System.out.println("ERROR: INDIVIDUAL: US07: " +curIndv.getId()+": age "+"bigger than 140 years old");
+
 		    						}
 		    						deathcount = 0;
 		    					}
@@ -386,6 +390,7 @@ public class Project03 {
 		    			}
 		    		}	
 	    		}
+
 				//Sprint1:US10 Marriage after 14	
 				
 				marcount=0;
@@ -528,6 +533,7 @@ public class Project03 {
 		    			}
 		    		}
 	    		}
+
 
 	    		//Divorce day before current date
 	    		if(!fam.getDivorceDate().equals("NA")) {
@@ -873,7 +879,9 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("C:\\Users\\18768\\Downloads\\ssw555-tm5-2021Fall-main\\ssw555-tm5-2021Fall.ged");
+
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint2_JianfeiLi.ged");
+
 		p.printINDIAndFAMTables(file);
 	} 
 }
