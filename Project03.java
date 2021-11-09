@@ -167,12 +167,28 @@ public class Project03 {
 					
 				}
 	    	}
-	  
+			// Reorder family members by decreasing age
+			Map<String,Integer> age_list = new HashMap<String,Integer>();
+			for(int i =0;i<individualList.size();i++){
+				age_list.put(individualList.get(i).getAge(),i);
+			}
+			TreeMap<String, Integer> sorted_age_list = new TreeMap<>(Comparator.reverseOrder());
+ 
+			// Copy all data from hashMap into TreeMap
+			sorted_age_list.putAll(age_list); 
+
+			// sorted_age_list = sorted_age_list.descendingMap();
+			String key = null;
+			Integer index = null;
+			Iterator iter = sorted_age_list.keySet().iterator();
+
 	    	System.out.println("Individuals");
 	    	System.out.format("%1$-10s %2$-25s %3$-7s %4$-12s %5$-5s %6$-7s %7$-12s %8$-20s %9$-20s \n", 
 	    			          "ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death", "Child", "Spouse");
-	    	for(int i=0;i<individualList.size();i++) {
-	    		Individual curIndv = individualList.get(i);
+			while (iter.hasNext()) {
+				key = (String)iter.next();
+				index = (Integer)sorted_age_list.get(key);
+	    		Individual curIndv = individualList.get(index);
 	    		System.out.format("%1$-10s %2$-25s %3$-7s %4$-12s %5$-5s %6$-7s %7$-12s %8$-20s %9$-20s \n", 
 	    						  curIndv.getId(), curIndv.getName(), curIndv.getGender(),
 	    			        	  curIndv.getBirthDate(), curIndv.getAge(), curIndv.isAlive(),
@@ -918,7 +934,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
+File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
 		p.printINDIAndFAMTables(file);
 	}
 }
