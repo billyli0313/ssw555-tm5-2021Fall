@@ -195,6 +195,14 @@ public class Project03 {
 	    				          curIndv.getDeathDate(), curIndv.getChildFIdsAsStr(), 
 	    				          curIndv.getSpouseFIdsAsStr());
 	    	}
+//	    	for(int i=0;i<individualList.size();i++) {
+//	    		Individual curIndv = individualList.get(i);
+//	    		System.out.format("%1$-10s %2$-25s %3$-7s %4$-12s %5$-5s %6$-7s %7$-12s %8$-20s %9$-20s \n", 
+//	    						  curIndv.getId(), curIndv.getName(), curIndv.getGender(),
+//	    			        	  curIndv.getBirthDate(), curIndv.getAge(), curIndv.isAlive(),
+//	    				          curIndv.getDeathDate(), curIndv.getChildFIdsAsStr(), 
+//	    				          curIndv.getSpouseFIdsAsStr());
+//	    	}
 	    	//Print all families in list familyList
 	    	System.out.println("Families");
 	    	System.out.format("%1$-10s %2$-12s %3$-12s %4$-5s %5$-25s %6$-10s %7$-25s %8$-20s \n", 
@@ -243,7 +251,7 @@ public class Project03 {
 				}
 			}
 
-	    	//Sprint1:US01:Dates before current date
+	    	//Sprint1:US01:Dates before current date-jfl
 	    	//shift name of month to number
 			Map<String,Integer> tags = new HashMap<String,Integer>(); 
 			tags.put("JAN",1); 
@@ -297,10 +305,15 @@ public class Project03 {
 	    	int Mdeathmonth = 0;
 	    	int Mdeathyear = 0;	
 	    	String Mdeath = null;
+	    	//variable of parents birth
+	    	String Fbirth = null;
+	    	int Fbirthyear = 0;
+	    	String Mbirth = null;
+	    	int Mbirthyear = 0;   
 	    	
 	    	for(int i=0;i<individualList.size();i++) {
 	    		Individual curIndv = individualList.get(i);
-	    		//Birthday before current date
+	    		//Birthday before current date-jfl
 	    		count = 0;
 	    		for(String member:curIndv.getBirthDate().split(" ")) {
 	    			count++;
@@ -355,7 +368,7 @@ public class Project03 {
 						count = 0;
 					}
 				}
-	    		//Death day before current date
+	    		//Death day before current date-jfl
 	    		if(!curIndv.getDeathDate().equals("NA")) {
 	    			deathcount = 0;
 		    		for(String deathmember:curIndv.getDeathDate().split(" ")) {
@@ -381,7 +394,7 @@ public class Project03 {
 	    		}
 	    	}
 	    	for(Family fam: familyList) {
-	    		//Marriage day before current date
+	    		//Marriage day before current date-jfl
 	    		if(!fam.getMarriageDate().equals("NA")) {
 	    			marcount = 0;
 		    		for(String marmember:fam.getMarriageDate().split(" ")) {
@@ -469,7 +482,7 @@ public class Project03 {
 	    				}
 	    			}
 				}
-				//Sprint2:US04 Marriage before divorce
+//				Sprint2:US04 Marriage before divorce
 				marcount=0;
 	    		for(String member:fam.getMarriageDate().split(" ")) {
 	    			marcount++;
@@ -547,7 +560,7 @@ public class Project03 {
 		    			}
 		    		}
 	    		}
-	    		//Divorce day before current date
+	    		//Divorce day before current date-jfl
 	    		if(!fam.getDivorceDate().equals("NA")) {
 	    			divcount = 0;
 		    		for(String divmember:fam.getDivorceDate().split(" ")) {
@@ -571,7 +584,7 @@ public class Project03 {
 		    			}
 		    		}
 	    		}
-	    		//Sprint1:US02:Birthday before marriage
+	    		//Sprint1:US02:Birthday before marriage-jfl
 	    		marcount=0;
 	    		for(String member:fam.getMarriageDate().split(" ")) {
 	    			marcount++;
@@ -631,7 +644,7 @@ public class Project03 {
 	    	    			}
 	    				}
 	    			}
-		    		//Sprint2:US08:Birth after marriage of parents
+		    		//Sprint2:US08:Birth after marriage of parents-jfl
 	    			for(String ChildId : fam.getChildrenId()){
 	    				String s = ChildId.replaceAll("\'", "");
 	    				if(curIndv.getId().equals(s)) {
@@ -658,7 +671,7 @@ public class Project03 {
 	    				}
 	    			}
 	    		}	
-	    		//Sprint2:US09:Birth before death of parents
+	    		//Sprint2:US09:Birth before death of parents-jfl
 	    		count=0;
 	    		for(int i=0;i<individualList.size();i++) {
 	    			Individual curIndv = individualList.get(i);
@@ -755,6 +768,101 @@ public class Project03 {
 		    			}
 	    			}
 	    		}
+	    		//Sprint3:US12:Parents not too old-jfl
+	    		count=0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			if(curIndv.getId().equals(fam.getHusbandId())) {
+	    				Fbirth = curIndv.getBirthDate();
+	    				for(String member:curIndv.getBirthDate().split(" ")) {
+		    					count++;
+		    				if(count==3){
+		    	    			Fbirthyear = Integer.parseInt(member);
+		    	    			count = 0;
+		    	    		}
+		    			}
+	    			}
+	    		}
+	    		count=0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			if(curIndv.getId().equals(fam.getWifeId())) {
+	    				Mbirth = curIndv.getBirthDate();
+	    				for(String member:curIndv.getBirthDate().split(" ")) {
+		    					count++;
+		    				if(count==3){
+		    	    			Mbirthyear = Integer.parseInt(member);
+		    	    			count = 0;
+		    	    		}
+		    			}
+	    			}
+	    		}
+	    		count = 0;
+	    		for(int i=0;i<individualList.size();i++) {
+	    			Individual curIndv = individualList.get(i);
+	    			for(String ChildId : fam.getChildrenId()){
+	    				String s = ChildId.replaceAll("\'", "");
+	    				if(curIndv.getId().equals(s)) {
+	    					for(String member:curIndv.getBirthDate().split(" ")) {
+	    						count++;
+	    						if(count==3){
+	    							year = Integer.parseInt(member);	
+		    						if(year-Fbirthyear>80) {
+				    	    			System.out.println("ERROR: FAMILY: US12: " +fam.getId()+": Father's Birthday "+Fbirth  +"more than 80 years older than his children " + curIndv.getBirthDate());
+				    	    		}
+		    						if(year-Mbirthyear>60) {
+		    							System.out.println("ERROR: FAMILY: US12: " +fam.getId()+": Mother's Birthday "+ Mbirth +"more than 60 years older than his children " + curIndv.getBirthDate());
+				    	    		}
+			    	    			count = 0;
+	    						}
+	    					}
+	    				}
+	    			}
+    			}
+    			//Sprint3:US13:Siblings spacing-jfl
+    			if(fam.getChildrenId().size()>1) {
+    				int[][] siblings = new int [fam.getChildrenId().size()][2];
+    				int indexs = 0;
+    				for(int i=0;i<individualList.size();i++) {
+    					Individual curIndv = individualList.get(i);
+    					for(String ChildId : fam.getChildrenId()){
+    						String s = ChildId.replaceAll("\'", "");
+    						if(curIndv.getId().equals(s)) {
+    							for(String member:curIndv.getBirthDate().split(" ")) {
+    								count++;
+    								if(count==2){
+    									siblings[indexs][1] = tags.get(member);	
+    								}else if(count==3){
+    									siblings[indexs][0] = Integer.parseInt(member);	
+    									count = 0;
+    								}
+    							}
+    							indexs++;
+    						}
+    					}	
+    				}
+	    			Arrays.sort(siblings,(a,b)->{
+	    				if(a[0]==b[0]){
+	    					return a[1]-b[1];
+	    				}
+	    				return a[0]-b[0];
+	    				
+	    			});
+	    			for(int i = 0;i<siblings.length-1;i++) {
+	    				if(siblings[i][0] == siblings[i+1][0]) {
+	    					if(Math.abs(siblings[i][1] - siblings[i][1]) < 8) {
+	    						System.out.println("ERROR: FAMILY: US13: " +fam.getId()+": Birth dates of siblings should be more than 8 months ");
+	    					}
+	    				}else {
+	    					if(siblings[i][0]+1 == siblings[i+1][0]) {
+	    						if(12-siblings[i][1]+ siblings[i+1][1]<8) {
+	    							System.out.println("ERROR: FAMILY: US13: " +fam.getId()+": Birth dates of siblings should be more than 8 months ");
+	    						}
+	    					}
+	    				}
+	    			}
+
+    			}
 	    	}
 	    		//US03 Birthday before Deathday
 			for(int i=0;i<individualList.size();i++) {
@@ -934,7 +1042,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 //You can change local path here
-File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-2021Fall.ged");
+File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint3_JianfeiLi.ged");
 		p.printINDIAndFAMTables(file);
 	}
 }
