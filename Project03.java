@@ -1018,6 +1018,87 @@ public class Project03 {
 		    		}	
 	    		}
 }
+	    	
+	     	
+	       	for(int i=0;i<individualList.size();i++) 
+	       	{
+	       		
+	    		Individual curIndv = individualList.get(i);
+	    		
+	    		//US38 List upcoming birthdays
+	    		
+	    		count = 0;
+	    		
+	    		for(String member:curIndv.getBirthDate().split(" ")) 
+	    		{
+	    			count++;
+	    			if(count==1)
+	    			{
+	    				
+	    				day = Integer.parseInt(member);
+	    				
+	    			}else if(count==2)
+	    			{
+	    				month = tags.get(member);
+	    				
+	    			}else if(count==3)
+	    			{
+	    				year = Integer.parseInt(member);	
+	    				
+	    				if(month==curmonth&&curday-day<30&&curday-day>0) 
+	    					
+	    				{
+	    					System.out.println(" INDIVIDUAL: US38: " +curIndv.getId()+"name "+curIndv.getName()+": Birthday "+ curIndv.getBirthDate() +"upcoming birthdays");
+	    				}
+                        if(curmonth-month==1&&curday-day>-30&&curday-day<0) 
+	    					
+	    				{
+	    					System.out.println(" INDIVIDUAL: US38: " +curIndv.getId()+"name "+curIndv.getName()+": Birthday "+ curIndv.getBirthDate() +"upcoming birthdays");
+	    				}
+	    				count = 0;
+	    			}
+	    		}
+	       	}
+	    	
+	       	
+	       	for(Family fam: familyList) 
+	       	{
+	       	//US39 List upcoming anniversaries
+	    		
+	    		if(!fam.getMarriageDate().equals("NA")) 
+	    		{
+	    			marcount = 0;
+		    		for(String marmember:fam.getMarriageDate().split(" ")) {
+		    			marcount++;
+		    			
+		    			if(marcount==1) 
+		    			{
+		    				marday = Integer.parseInt(marmember);
+		    			}
+		    			else if(marcount==2)
+		    			{
+		    				marmonth = tags.get(marmember);	
+		    			}else if(marcount==3)
+		    			{
+		    				maryear = Integer.parseInt(marmember);	
+		    				if( curmonth-marmonth==1 && curday-marday>-30&&curday-marday<0)
+		    				{
+			    					System.out.println(" FAMILY: US39: " +fam.getId()+fam.getHusbandName()+" "+fam.getWifeName()+": Married "+ fam.getMarriageDate() +"upcoming anniversaries");
+			    				
+		    				}
+		    				else if(  marmonth==curmonth && marday-curday<30&&marday-curday>0) 
+		    				{
+		    					   System.out.println(" FAMILY: US39: " +fam.getId() +fam.getHusbandName()+" "+fam.getWifeName()+": Married "+ fam.getMarriageDate() +"upcoming anniversaries");
+		    			
+		    				}
+		    				
+		    			
+		    				marcount = 0;
+		    			}
+		    		}	
+	    		}
+	       	}
+	    	
         }  catch (IOException e) {
         	//e.printStackTrace();
         	System.out.println("Please enter correct file name");
@@ -1041,8 +1122,8 @@ public class Project03 {
 	
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
-//You can change local path here
-File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint3_JianfeiLi.ged");
-		p.printINDIAndFAMTables(file);
-	}
-}
+		//You can change local path here
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint3_JianfeiLi.ged");
+				p.printINDIAndFAMTables(file);
+			}
+		}
