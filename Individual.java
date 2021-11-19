@@ -12,6 +12,7 @@ public class Individual {
 	String gender;
 	String birthDate;
 	String deathDate;
+	String marriageDate;
 	List<String> spouseFamilyIds = new ArrayList<String>();
 	List<String> childFamilyIds = new ArrayList<String>();
 	public String getName() {
@@ -33,6 +34,9 @@ public class Individual {
 	public String isAlive() {
 		return deathDate == null ? "True" : "False";
 	}
+	public String isMarriage() {
+		return marriageDate == null ? "True" : "False";
+	}
 	public String getGender() {
 		return gender;
 	}
@@ -44,6 +48,12 @@ public class Individual {
 	}
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
+	}
+	public String getMarriageDate() {
+		return marriageDate == null ? "NA" : marriageDate;
+	}
+	public void setMarriageDate(String marriageDate) {
+		this.marriageDate = marriageDate;
 	}
 	public String getDeathDate() {
 		return deathDate == null ? "NA" : deathDate;
