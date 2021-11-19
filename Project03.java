@@ -157,11 +157,11 @@ public class Project03 {
 						}
 						if(fam.getChildrenId() == null) {
 						List<String> childrenIds = new ArrayList<String>();
-						childrenIds.add("'"+indv.getId()+"'");
+						childrenIds.add(""+indv.getId()+"");
 						fam.setCId(childrenIds);
 						}
 						else {
-						fam.getChildrenId().add("'"+indv.getId()+"'");
+						fam.getChildrenId().add(""+indv.getId()+"");
 						}
 					}
 					
@@ -250,6 +250,53 @@ public class Project03 {
 					familyIDList.add(INDI);
 				}
 			}
+
+			// Sprint3 US32:List multiple births wyk
+			// List all multiple births in a GEDCOM file
+			for(Family fam: familyList) {
+				List<String> CurFamchildrenId = fam.getChildrenId();
+				if(CurFamchildrenId.size()>1){
+					List<Individual> recordchild = new ArrayList<Individual>();
+					List<String> recordbirthdate = new ArrayList<String>();
+					for(int i=0;i<CurFamchildrenId.size();i++){
+						String tmp_childId = CurFamchildrenId.get(i);
+						Individual tmpchild = individualList.get(individualIDList.indexOf(tmp_childId));
+						String tmpbirthDate = tmpchild.getBirthDate();
+						recordchild.add(tmpchild);
+						if(recordbirthdate.contains(tmpbirthDate)){
+							// meet multiple birth
+							Integer record_index= recordbirthdate.indexOf(tmpbirthDate);
+							Individual exsited_child = recordchild.get(record_index);
+							System.out.println("FAMILY: US32 "+exsited_child.getId()+" and "+tmpchild.getId()+" are multiple birth.");
+							recordbirthdate.add(tmpbirthDate);
+						}else{
+							// add to recprd
+							recordbirthdate.add(tmpbirthDate);
+						}
+					}
+				}
+			}
+			// Sprint3 US33	List orphans wyk
+			// List all orphaned children (both parents dead and child < 18 years old) in a GEDCOM file
+			for(Family fam: familyList) {
+				String fam_husbandId = fam.getHusbandId();
+				String fam_wifeId = fam.getWifeId();
+				Individual fam_husband = individualList.get(individualIDList.indexOf(fam_husbandId));
+				Individual fam_wife = individualList.get(individualIDList.indexOf(fam_wifeId));
+				if(fam_husband.deathDate!=null && fam_wife.deathDate!=null){
+					// both parents dead
+					List<String> CurFamchildrenId = fam.getChildrenId();
+					for(int i=0;i<CurFamchildrenId.size();i++){
+						String tmp_childId = CurFamchildrenId.get(i);
+						Individual tmpchild = individualList.get(individualIDList.indexOf(tmp_childId));
+						Integer tmpage =  Integer.parseInt(tmpchild.getAge());
+						if(tmpage<18){
+							System.out.println("INDIVIDUAL: US33: "+tmp_childId+" is a orphan.");
+						};
+					}
+				}
+			}
+
 
 	    	//Sprint1:US01:Dates before current date-jfl
 	    	//shift name of month to number
@@ -1123,7 +1170,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 		//You can change local path here
-		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint3_JianfeiLi.ged");
+		File file = new File("D:\\SIT\\CS555WS\\ssw555-tm5-2021Fall\\ssw555-tm5-2021Fall test.ged");
 				p.printINDIAndFAMTables(file);
 			}
 		}
