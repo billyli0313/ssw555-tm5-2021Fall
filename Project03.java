@@ -440,6 +440,21 @@ public class Project03 {
 		    		}	
 	    		}
 	    	}
+		//Sprint3 US29 List deceased
+			
+			for(int i=0;i<individualList.size();i++) {
+				Individual curIndv = individualList.get(i);
+					if(curIndv.getDeathDate().equals("NA")) {
+						System.out.println(" INDIVIDUAL: US29: " +curIndv.getId()+"name "+curIndv.getName()+"is deceased individual.");
+						}
+		
+				//Sprint3 US30 List living married
+				if(!curIndv.getDeathDate().equals("NA") && curIndv.getMarriageDate().equals("NA")) {
+						System.out.println(" INDIVIDUAL: US30: " +curIndv.getId()+"name "+curIndv.getName()+"is living and married.");
+					}
+				
+				
+			}
 	    	for(Family fam: familyList) {
 	    		//Marriage day before current date-jfl
 	    		if(!fam.getMarriageDate().equals("NA")) {
