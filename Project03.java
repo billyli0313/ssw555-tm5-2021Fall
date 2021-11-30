@@ -358,6 +358,10 @@ public class Project03 {
 	    	String Mbirth = null;
 	    	int Mbirthyear = 0;   
 	    	
+	    	String fatherName = null;
+	    	String sonName = null;
+	    	Set<String> nameandbirth = new HashSet<String>(); 
+	    	
 	    	for(int i=0;i<individualList.size();i++) {
 	    		Individual curIndv = individualList.get(i);
 	    		//Birthday before current date-jfl
@@ -382,6 +386,14 @@ public class Project03 {
 	    				count = 0;
 	    			}
 	    		}
+	    		//Sprint4:US23 Unique name and birth date-jfl
+	    		String nb = curIndv.getName() + curIndv.getBirthDate();
+	    		if(nameandbirth.contains(nb)) {
+	    			System.out.println("ERROR: INDIVIDUAL: US23: " + curIndv.getId()+ ": Name " + curIndv.getName() + "and birth day "+ curIndv.getBirthDate() + "is repeated");
+	    		}else {
+	    		nameandbirth.add(nb);
+	    		}
+	    		
 			//Sprint1:US07 Less than 150
 
 				for(String member:curIndv.getBirthDate().split(" ")) {
@@ -729,6 +741,21 @@ public class Project03 {
 			    	    			}
 			    	    			count = 0;
 	    						}
+	    					}
+	    				}
+	    			}
+		    		//Sprint4:US16:Male last names-jfl
+	    			for(String ChildId : fam.getChildrenId()){
+	    				String s = ChildId.replaceAll("\'", "");
+	    				if(curIndv.getId().equals(s) && curIndv.getGender().equals("M ")) {
+	    					for(String name:fam.getHusbandName().split(" ")) {
+	    						fatherName = name;
+	    					}
+	    					for(String name:curIndv.getName().split(" ")) {
+	    						sonName = name;
+	    					}   					
+	    					if(!fatherName.equals(sonName)) {
+	    						System.out.println("ERROR: FAMILY: US16: " +fam.getId()+": Son's last name "+ sonName +" is different from his father " + fatherName);
 	    					}
 	    				}
 	    			}
@@ -1185,7 +1212,7 @@ public class Project03 {
 	public static void main(String[] args) throws IOException {
 		Project03 p = new Project03();
 		//You can change local path here
-		File file = new File("D:\\SIT\\CS555WS\\ssw555-tm5-2021Fall\\ssw555-tm5-2021Fall test.ged");
+		File file = new File("C:\\Users\\Left丶\\OneDrive - stevens.edu\\桌面\\555\\ssw555-tm5-sprint4_JianfeiLi.ged");
 				p.printINDIAndFAMTables(file);
 			}
 		}
