@@ -297,6 +297,51 @@ public class Project03 {
 				}
 			}
 
+			// Sprint4 US25	Unique first names in families wyk
+			// No more than one child with the same name and birth date should appear in a family
+			for(Family fam: familyList) {
+				// get all the child
+				List<String> CurFamchildrenId = fam.getChildrenId();
+
+				Map<String,String> RecordChildrenName = new HashMap<String,String>(); 
+				Map<String,String> RecordChildrenBirthDate = new HashMap<String,String>(); 
+
+				for(int i=0;i<CurFamchildrenId.size();i++){
+					String tmp_childId = CurFamchildrenId.get(i);
+					Individual tmpchild = individualList.get(individualIDList.indexOf(tmp_childId));
+					if(RecordChildrenBirthDate.containsKey(tmpchild.getBirthDate())){
+						// if date recorded
+						if(RecordChildrenName.containsKey(tmpchild.getName())){
+							// if name recorded
+							System.out.println("FAMILY: US25: "+tmp_childId+" need no more than one child with same birth and name.");
+						}else{
+							// no name recorded
+							RecordChildrenName.put(tmpchild.getName(), "name");
+						}
+					}else{
+						//date not recorded
+						RecordChildrenBirthDate.put(tmpchild.getBirthDate(),"date");
+						
+						if(RecordChildrenName.containsKey(tmpchild.getName())){
+						// if name recorded
+							continue;
+						}else{
+						// if name not recorded
+						RecordChildrenName.put(tmpchild.getName(), "name");
+						}
+					}
+
+				}
+			}
+			// Sprint4 US15	Fewer than 15 siblings wyk
+			// There should be fewer than 15 siblings in a family
+			for(Family fam: familyList) {
+				// get all the child
+				List<String> CurFamchildrenId = fam.getChildrenId();
+				if(CurFamchildrenId.size()>=15){
+					System.out.println("FAMILY: US15: "+fam.getId()+"should be fewer than 15 siblings");
+				}
+			}
 
 	    	//Sprint1:US01:Dates before current date-jfl
 	    	//shift name of month to number
