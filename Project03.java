@@ -1187,7 +1187,278 @@ public class Project03 {
 		    		}	
 	    		}
 	       	}
+	    		
+	      //Sprint4:US34:List large age differences
+	     	for(Family fam: familyList) 
+	       	if(!fam.getMarriageDate().equals("NA")) {
+    		count=0;
+    		for(int i=0;i<individualList.size();i++) {
+    			Individual curIndv = individualList.get(i);
+    			if(curIndv.getId().equals(fam.getHusbandId())) {
+    				Fbirth = curIndv.getBirthDate();
+    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    					count++;
+	    				if(count==3){
+	    	    			Fbirthyear = Integer.parseInt(member);
+	    	    			count = 0;
+	    	    		}
+	    			}
+    			}
+    		}
+    		count=0;
+    		for(int i=0;i<individualList.size();i++) {
+    			Individual curIndv = individualList.get(i);
+    			if(curIndv.getId().equals(fam.getWifeId())) {
+    				Mbirth = curIndv.getBirthDate();
+    				for(String member:curIndv.getBirthDate().split(" ")) {
+	    					count++;
+	    				if(count==3){
+	    	    			Mbirthyear = Integer.parseInt(member);
+	    	    			count = 0;
+	    	    		}
+	    			}
+    			}
+    		}
+    		count = 0;
+               int a=curyear-Mbirthyear;
+               int b=curyear-Fbirthyear;
+    		if(b>0&&a/b>2) {
+                	
+	    		System.out.println(" FAMILY: US34: " +fam.getId()+fam.getHusbandName()+" "+fam.getWifeName() +"List large age differences");
+	    	}	       	
+    		if(a>0&&b/a>2) {
+            	
+    		System.out.println(" FAMILY: US34: " +fam.getId()+fam.getHusbandName()+" "+fam.getWifeName() +"List large age differences");
+    	}	       	
+          }
 	    	
+	    	
+	     	//Sprint4:US42:Reject illegitimate dates
+	     	
+	     	
+	     	
+	     	//check birth day
+	     	for(int i=0;i<individualList.size();i++) {
+	    		
+	     		Individual curIndv = individualList.get(i);
+	    		count = 0;
+	    		for(String member:curIndv.getBirthDate().split(" ")) {
+	    			count++;
+	    			if(count==1) {
+	    				day = Integer.parseInt(member);
+	    			}else if(count==2){
+	    				month = tags.get(member);	
+	    			}else if(count==3){
+	    				year = Integer.parseInt(member);	
+	    				if(month==12&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==10&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==8&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==7&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==5&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==3&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==1&&day>31) {
+	    					System.out.println("ERROR : US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month>12||day<0||month<0) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==11&&day>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==4&&day>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==6&&day>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==9&&day>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				if(month==2&&day>28) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Birthday "+ curIndv.getBirthDate() +"Reject illegitimate dates");
+	    				}
+	    				count = 0;
+	    			}
+	    		}
+	        //check deathday
+    		if(!curIndv.getDeathDate().equals("NA")) {
+    			deathcount = 0;
+	    		for(String deathmember:curIndv.getDeathDate().split(" ")) {
+	    			deathcount++;
+	    			if(deathcount==1) {
+	    				deathday = Integer.parseInt(deathmember);
+	    			}else if(deathcount==2){
+	    				deathmonth = tags.get(deathmember);	
+	    			}else if(deathcount==3){
+	    				deathyear = Integer.parseInt(deathmember);	
+	    				if(deathmonth==1&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==3&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==5&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==7&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==8&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==10&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if(deathmonth==12&&deathday>31) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");	    					
+	    				}
+	    				if( deathmonth>12||deathday<0||deathmonth<0) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				if(deathmonth==4&&deathday>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				if(deathmonth==6&&deathday>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				if(deathmonth==9&&deathday>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				if(deathmonth==11&&deathday>30) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				if(deathmonth==2&&deathday>28) {
+	    					System.out.println("ERROR: US42: " +curIndv.getId()+": Died "+ curIndv.getDeathDate() +"Reject illegitimate dates");
+	    				}
+	    				deathcount = 0;
+	    			}
+	    		}	
+    		}
+    	}
+	     	//check marriage date
+	     	for(Family fam: familyList) {
+	    	     marcount=0;
+    		for(String member:fam.getMarriageDate().split(" ")) {
+    			 
+    			 marcount++;
+    			if(marcount==1) {
+    				marday = Integer.parseInt(member);
+    			}else if(marcount==2){
+    				marmonth = tags.get(member);	
+    			}else if(marcount==3){
+    				maryear = Integer.parseInt(member);	
+    				marcount=0;
+    			}
+    			if(marmonth>12||marday<0||marmonth<0) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==2&&marday>28) {
+					System.out.println("ERROR : US42:  " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==1&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==3&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==5&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==7&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==8&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==10&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==12&&marday>31) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==4&&marday>30) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==6&&marday>30) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==9&&marday>30) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+				if(marmonth==11&&marday>30) {
+					System.out.println("ERROR : US42: " +fam.getId()+": Married "+ fam.getMarriageDate() +"Reject illegitimate dates");
+				}
+    		}
+	     	}
+	     	for(Family fam: familyList) {
+    		// check divorce date
+			if(!fam.getDivorceDate().equals("NA")) {
+    			divcount = 0;
+	    		for(String divmember:fam.getDivorceDate().split(" ")) {
+	    			divcount++;
+	    			if(divcount==1) {
+	    				divday = Integer.parseInt(divmember);
+	    			}else if(divcount==2){
+	    				divmonth = tags.get(divmember);	
+	    			}else if(divcount==3){
+	    				divyear = Integer.parseInt(divmember);	
+	    				if(divmonth>12||divday<0||divmonth<0) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==2&&divday>28) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": DReject illegitimate dates");
+	    				}
+	    				if(divmonth==4&&divday>30) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==6&&divday>30) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==9&&divday>30) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==11&&divday>30) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==1&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==3&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==5&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==7&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==8&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==10&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				if(divmonth==12&&divday>31) {
+	    					System.out.println("ERROR : US42: " +fam.getId()+fam.getDivorceDate()+": Reject illegitimate dates");
+	    				}
+	    				divcount = 0;
+	    			}
+	    		}
+    		}
+	     	}
+		
         }  catch (IOException e) {
         	//e.printStackTrace();
         	System.out.println("Please enter correct file name");
