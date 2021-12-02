@@ -456,17 +456,47 @@ public class Project03 {
 			
 			for(int i=0;i<individualList.size();i++) {
 				Individual curIndv = individualList.get(i);
-					if(curIndv.getDeathDate().equals("NA")) {
+					if(!curIndv.getDeathDate().equals("NA")) {
 						System.out.println(" INDIVIDUAL: US29: " +curIndv.getId()+"name "+curIndv.getName()+"is deceased individual.");
 						}
 		
 				//Sprint3 US30 List living married
-				if(!curIndv.getDeathDate().equals("NA") && curIndv.getMarriageDate().equals("NA")) {
+				if(curIndv.getDeathDate().equals("NA") && !curIndv.getSpouseFIdsAsStr().equals("NA")) {
 						System.out.println(" INDIVIDUAL: US30: " +curIndv.getId()+"name "+curIndv.getName()+"is living and married.");
 					}
 				
+				//Sprint4 US31 List living and not married
+			
+				if(Integer.parseInt(curIndv.getAge())>30 && curIndv.getSpouseFIdsAsStr().equals("NA") && curIndv.getDeathDate().equals("NA") ) {
+						System.out.println(" INDIVIDUAL: US31: " +curIndv.getId()+" name: "+curIndv.getName()+"is living and not married.");
+					}
+			}
+		//Sprint1:US17: No Marriages To Descendants
+			 for(Family fam: familyList) {
+			
+				
+			 for (int i =0; i<familyList.size(); i++){
+						   
+				if (familyList.get(i) != null && !fam.getId().equalsIgnoreCase(familyList.get(i).getId()) && fam.getHusbandId().equalsIgnoreCase(familyList.get(i).getHusbandId())){
+					List<String> childList =familyList.get(i).getChildrenId();
+					for (String child : childList){
+						if (child.equalsIgnoreCase(fam.getWifeId())){
+							System.out.println("Anomaly US17: Family member "+fam.getHusbandId() +" has married to descendent " +fam.getWifeId() +" in Famliy " + fam.getId());       		
+						}
+					}
+					
+				}
+				if (familyList.get(i) != null && !fam.getId().equalsIgnoreCase(familyList.get(i).getId()) && fam.getWifeId().equalsIgnoreCase(familyList.get(i).getWifeId())){
+					List<String> childList =familyList.get(i).getChildrenId();
+					for (String child : childList){
+						if (child.equalsIgnoreCase(fam.getHusbandId())){
+							System.out.println("Anomaly US17: Family member " +" has married to descendent " +fam.getWifeId() +" in Famliy " + fam.getId());       		
+						}
+				}
 				
 			}
+		}
+		}
 	    	for(Family fam: familyList) {
 	    		//Marriage day before current date-jfl
 	    		if(!fam.getMarriageDate().equals("NA")) {
